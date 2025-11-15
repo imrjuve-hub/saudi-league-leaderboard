@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>المتصدرين - Saudi eLeague</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #02030b;
+      --bg-card: rgba(7, 10, 24, 0.96);
+      --accent: #e0b668;
+      --accent-soft: rgba(224, 182, 104, 0.16);
+      --text-main: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.65);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #141629 0%, #02030b 55%, #000000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to left, rgba(2, 3, 11, 0.94), rgba(2, 3, 11, 0.85));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 1rem 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-soft);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 0, rgba(224, 182, 104, 0.25), transparent 65%);
+      font-size: 1.4rem;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+    }
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      cursor: default;
+    }
+    .login-link {
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent-soft);
+      background: radial-gradient(circle at 0 0, rgba(224, 182, 104, 0.18), transparent 60%);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: default;
+    }
+    main {
+      flex: 1;
+      padding: 2.5rem 5vw 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .hero-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 24px;
+      margin: 0 auto 1rem;
+      background: radial-gradient(circle at 30% 0, rgba(224, 182, 104, 0.45), transparent 70%), rgba(10, 13, 30, 0.95);
+      border: 1px solid var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    .hero-title {
+      font-size: 1.9rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.35rem;
+    }
+    .hero-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .leaderboard-card {
+      width: 100%;
+      max-width: 960px;
+      background: var(--bg-card);
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+      padding: 1.5rem 1.25rem 1.75rem;
+    }
+    .leaderboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.3rem;
+    }
+    .leaderboard-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .pill {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(40, 47, 89, 0.9);
+      color: var(--text-muted);
+    }
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: left;
+      flex: 1;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    thead th {
+      text-align: right;
+      padding: 0.5rem 0.4rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    tbody tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.18s ease, transform 0.12s ease;
+    }
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+      transform: translateY(-1px);
+    }
+    td {
+      padding: 0.6rem 0.4rem;
+      vertical-align: middle;
+    }
+    .col-rank {
+      width: 64px;
+      text-align: center;
+    }
+    .rank-badge {
+      min-width: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.8rem;
+    }
+    .rank-top1 {
+      background: radial-gradient(circle at 30% 0, rgba(224, 182, 104, 0.65), transparent 70%);
+      border-color: rgba(224, 182, 104, 0.8);
+    }
+    .rank-top2 {
+      border-color: rgba(200, 200, 200, 0.75);
+    }
+    .rank-top3 {
+      border-color: rgba(205, 146, 88, 0.75);
+    }
+    .col-logo {
+      width: 54px;
+    }
+    .team-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.05), transparent 60%);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+    .team-name {
+      font-weight: 500;
+    }
+    .col-points {
+      text-align: left;
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+    .points-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(36, 178, 127, 0.12);
+      color: #7ee1af;
+      font-size: 0.8rem;
+    }
+    .footer-note {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 640px) {
+      header {
+        padding-inline: 1.25rem;
+      }
+      main {
+        padding-inline: 1.25rem;
+      }
+      .hero-title {
+        font-size: 1.6rem;
+      }
+      thead th:nth-child(2) {
+        display: none;
+      }
+      tbody td:nth-child(2) {
+        display: none;
+      }
+      .leaderboard-card {
+        padding-inline: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-mark">🎮</div>
+        <div class="brand-text">
+          <div class="brand-title">Saudi eLeague</div>
+          <div class="brand-sub">لوحة المتصدرين للفرق</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="lang-toggle">
+          <span>العربية</span>
+          <span style="opacity:0.5;">| English</span>
+        </div>
+        <div class="login-link">سجل دخولك</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-icon">🏅</div>
+        <h1 class="hero-title">المتصدرين</h1>
+        <p class="hero-subtitle">ترتيب الفرق محدث مباشرة من Google Sheets</p>
+      </section>
+
+      <section class="leaderboard-card">
+        <div class="leaderboard-header">
+          <div class="leaderboard-title">
+            الفرق
+            <span class="pill">ترتيب عام</span>
+          </div>
+          <div id="status" class="status-text"></div>
+        </div>
+
+        <table aria-label="لوحة المتصدرين">
+          <thead>
+            <tr>
+              <th class="col-rank">المرتبة</th>
+              <th class="col-logo">الشعار</th>
+              <th>الفريق</th>
+              <th class="col-points">النقاط</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body">
+            <!-- سيتم حقن الصفوف من Google Sheets -->
+          </tbody>
+        </table>
+
+        <div class="footer-note">
+          <span>البيانات يتم تحديثها من ملف Google Sheets عند كل تحميل للصفحة.</span>
+          <span>يمكنك تعديل النقاط او ترتيب الفرق مباشرة في الملف.</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ضع معرف ملف Google Sheets واسم الشيت هنا
+    // مثال لرابط المشاركة:
+    // https://docs.google.com/spreadsheets/d/1AbCdEfGh...XYZ/edit?usp=sharing
+    // في هذا المثال المعرف هو 1AbCdEfGh...XYZ
+
+    const SHEET_ID = "https://docs.google.com/spreadsheets/d/1kAcwtRMEZocVLnkr2Ho3N9A1zQxB0oIr8KhiHcroRpQ"; // استبدل هذا بالقيمة الصحيحة
+    const SHEET_NAME = "Leaderboard";      // استبدل هذا باسم الشيت اذا كان مختلفا
+
+    // هذا الرابط يستخدم واجهة gviz لقراءة بيانات الشيت
+    const SHEET_URL =
+      "https://docs.google.com/spreadsheets/d/" +
+      SHEET_ID +
+      "/gviz/tq?sheet=" +
+      encodeURIComponent(SHEET_NAME);
+
+    async function loadLeaderboard() {
+      const statusEl = document.getElementById("status");
+      const tbody = document.getElementById("leaderboard-body");
+
+      statusEl.textContent = "جار جلب البيانات من Google Sheets...";
+      tbody.innerHTML = "";
+
+      try {
+        const response = await fetch(SHEET_URL);
+
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
+
+        const text = await response.text();
+
+        // نحاول استخراج كائن JSON من استجابة gviz
+        const jsonString = text.substring(
+          text.indexOf("{"),
+          text.lastIndexOf("}") + 1
+        );
+        const data = JSON.parse(jsonString);
+
+        const rows = data.table.rows || [];
+        const teams = [];
+
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].c.map(function (cell) {
+            return cell && typeof cell.v !== "undefined" ? cell.v : "";
+          });
+
+          const rankCell = cells[0];
+          const logoCell = cells[1];
+          const nameCell = cells[2];
+          const pointsCell = cells[3];
+
+          // تجاهل الصف الاول اذا كان عبارة عن عناوين
+          if (i === 0 && isNaN(Number(rankCell))) {
+            continue;
+          }
+
+          if (!nameCell) {
+            continue;
+          }
+
+          const rank = Number(rankCell);
+          const points = Number(pointsCell);
+
+          teams.push({
+            rank: isNaN(rank) ? null : rank,
+            logo: logoCell || "",
+            name: nameCell || "",
+            points: isNaN(points) ? 0 : points
+          });
+        }
+
+        if (teams.length === 0) {
+          statusEl.textContent =
+            "لم يتم العثور على بيانات. تأكد من ان الشيت يحتوي على صفوف.";
+          return;
+        }
+
+        // اذا لم يكن هناك ترتيب في العمود الاول نرتب حسب النقاط تنازليا
+        const allRanksEmpty = teams.every(function (t) {
+          return t.rank === null;
+        });
+
+        if (allRanksEmpty) {
+          teams.sort(function (a, b) {
+            return b.points - a.points;
+          });
+          teams.forEach(function (t, index) {
+            t.rank = index + 1;
+          });
+        } else {
+          teams.sort(function (a, b) {
+            if (a.rank === null) return 1;
+            if (b.rank === null) return -1;
+            return a.rank - b.rank;
+          });
+        }
+
+        // حقن الصفوف في الجدول
+        teams.forEach(function (team, index) {
+          const tr = document.createElement("tr");
+
+          const rankTd = document.createElement("td");
+          rankTd.className = "col-rank";
+
+          const badge = document.createElement("span");
+          badge.className = "rank-badge";
+
+          if (index === 0) {
+            badge.classList.add("rank-top1");
+          } else if (index === 1) {
+            badge.classList.add("rank-top2");
+          } else if (index === 2) {
+            badge.classList.add("rank-top3");
+          }
+
+          badge.textContent = team.rank;
+          rankTd.appendChild(badge);
+
+          const logoTd = document.createElement("td");
+          logoTd.className = "col-logo";
+          if (team.logo) {
+            const img = document.createElement("img");
+            img.src = team.logo;
+            img.alt = "شعار " + team.name;
+            img.className = "team-logo";
+            logoTd.appendChild(img);
+          }
+
+          const nameTd = document.createElement("td");
+          nameTd.className = "team-name";
+          nameTd.textContent = team.name;
+
+          const pointsTd = document.createElement("td");
+          pointsTd.className = "col-points";
+          const pointsPill = document.createElement("span");
+          pointsPill.className = "points-pill";
+          pointsPill.textContent = team.points;
+          pointsTd.appendChild(pointsPill);
+
+          tr.appendChild(rankTd);
+          tr.appendChild(logoTd);
+          tr.appendChild(nameTd);
+          tr.appendChild(pointsTd);
+
+          tbody.appendChild(tr);
+        });
+
+        statusEl.textContent = "";
+      } catch (error) {
+        console.error(error);
+        statusEl.textContent =
+          "تعذر جلب البيانات من Google Sheets. تأكد من ان الرابط صحيح ومعيار الوصول عام.";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadLeaderboard);
+  </script>
+</body>
+</html>
